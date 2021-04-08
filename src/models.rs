@@ -9,7 +9,7 @@ pub struct Reading {
     pub id: i32,
     pub index: i32,
     pub field_description: String,
-    pub measurement: f64,
+    pub measurement: BigDecimal,
 }
 
 #[derive(Serialize, Queryable)]

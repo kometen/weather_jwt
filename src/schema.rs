@@ -4,7 +4,7 @@ table! {
         id -> Integer,
         index -> Integer,
         field_description -> Text,
-        measurement -> Double,
+        measurement -> Numeric,
     }
 }
 
