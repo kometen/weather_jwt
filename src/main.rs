@@ -3,12 +3,12 @@
 extern crate diesel;
 
 mod controller;
+mod errors;
 mod models;
 mod schema;
-mod errors;
 
-use actix_web::{web, App, HttpServer};
 use actix_web::web::route;
+use actix_web::{web, App, HttpServer};
 use diesel::prelude::*;
 use diesel::r2d2::{self, ConnectionManager};
 
@@ -30,9 +30,12 @@ async fn main() -> std::io::Result<()> {
             .data(web::PayloadConfig::new(1 << 25))
             .data(pool.clone())
             .route("/locations", web::get().to(controller::get_locations))
-            .route("/locations/{id}", web::get().to(controller::get_location_by_id))
+            .route(
+                "/locations/{id}",
+                web::get().to(controller::get_location_by_id),
+            )
     })
-        .bind("127.0.0.1:8090")?
-        .run()
-        .await
+    .bind("127.0.0.1:8090")?
+    .run()
+    .await
 }

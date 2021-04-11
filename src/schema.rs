@@ -1,6 +1,6 @@
 table! {
     readings {
-        measurement_time_default -> Timestamp,
+        measurement_time_default -> Timestamptz,
         id -> Integer,
         index -> Integer,
         field_description -> Text,
@@ -10,7 +10,7 @@ table! {
 
 table! {
     locations {
-        publication_time -> Timestamp,
+        publication_time -> Timestamptz,
         id -> Integer,
         name -> Text,
         latitude -> Numeric,
