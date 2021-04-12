@@ -1,6 +1,8 @@
 use super::Pool;
-use crate::models::Location;
+use crate::models::{Location, Reading};
 use crate::schema::locations::dsl::locations;
+use crate::schema::readings::columns::measurement_time_default;
+use crate::schema::readings::dsl::readings;
 use actix_web::Responder;
 use actix_web::{web, Error, HttpResponse};
 use chrono::{DateTime, Local};
@@ -40,4 +42,20 @@ fn db_get_location_by_id(
 ) -> Result<Location, diesel::result::Error> {
     let conn = pool.get().unwrap();
     locations.find(location_id).get_result::<Location>(&conn)
+}
+
+pub async fn get_readings(db: web::Data<Pool>) -> Result<HttpResponse, Error> {
+    Ok(web::block(move || get_all_readings(db))
+        .await
+        .map(|reading| HttpResponse::Ok().json(reading))
+        .map_err(|_| HttpResponse::InternalServerError())?)
+}
+
+fn get_all_readings(pool: web::Data<Pool>) -> Result<Vec<Reading>, diesel::result::Error> {
+    let conn = pool.get().unwrap();
+    let items = readings
+        .order_by(measurement_time_default)
+        .limit(256)
+        .load::<Reading>(&conn)?;
+    Ok(items)
 }
