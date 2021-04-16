@@ -2,9 +2,7 @@ table! {
     readings {
         measurement_time_default -> Timestamptz,
         id -> Integer,
-        index -> Integer,
-        field_description -> Text,
-        measurement -> Numeric,
+        data -> Jsonb,
     }
 }
 
