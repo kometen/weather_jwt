@@ -13,6 +13,14 @@ pub struct Reading {
 }
 
 #[derive(Serialize, Queryable)]
+pub struct LatestReading {
+    #[diesel(deserialize_as = "MyDateTimeWrapper")]
+    pub measurement_time_default: DateTime<Local>,
+    pub id: i32,
+    pub data: serde_json::Value,
+}
+
+#[derive(Serialize, Queryable)]
 pub struct Location {
     #[diesel(deserialize_as = "MyDateTimeWrapper")]
     pub publication_time: DateTime<Local>,

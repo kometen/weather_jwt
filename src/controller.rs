@@ -1,5 +1,6 @@
 use super::Pool;
-use crate::models::{Location, Reading};
+use crate::models::{LatestReading, Location, MyDateTimeWrapper, Reading};
+use crate::schema::latest_readings::dsl::latest_readings;
 use crate::schema::locations::dsl::locations;
 use crate::schema::readings::columns::{id, measurement_time_default};
 use crate::schema::readings::dsl::readings;
@@ -51,12 +52,9 @@ pub async fn get_readings(db: web::Data<Pool>) -> Result<HttpResponse, Error> {
         .map_err(|_| HttpResponse::InternalServerError())?)
 }
 
-fn db_get_readings(pool: web::Data<Pool>) -> Result<Vec<Reading>, diesel::result::Error> {
+fn db_get_readings(pool: web::Data<Pool>) -> Result<Vec<LatestReading>, diesel::result::Error> {
     let conn = pool.get().unwrap();
-    readings
-        .order(measurement_time_default.desc())
-        .limit(256)
-        .load::<Reading>(&conn)
+    latest_readings.load::<LatestReading>(&conn)
 }
 
 pub async fn get_readings_by_id(
