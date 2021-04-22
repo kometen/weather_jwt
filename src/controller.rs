@@ -1,15 +1,11 @@
 use super::Pool;
-use crate::models::{LatestReading, Location, MyDateTimeWrapper, Reading};
+use crate::models::{LatestReading, Location, Reading};
 use crate::schema::latest_readings::dsl::latest_readings;
 use crate::schema::locations::dsl::locations;
 use crate::schema::readings::columns::{id, measurement_time_default};
 use crate::schema::readings::dsl::readings;
-use actix_web::Responder;
 use actix_web::{web, Error, HttpResponse};
-use chrono::{DateTime, Local};
-use diesel::dsl::{delete, insert_into};
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
-use serde::{Deserialize, Serialize};
 use std::vec::Vec;
 
 pub async fn get_locations(db: web::Data<Pool>) -> Result<HttpResponse, Error> {
