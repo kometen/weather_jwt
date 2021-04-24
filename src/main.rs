@@ -19,7 +19,8 @@ pub type Pool = r2d2::Pool<ConnectionManager<PgConnection>>;
 
 async fn validator(req: ServiceRequest, credentials: BearerAuth) -> Result<ServiceRequest, Error> {
     let config = req
-        .app_data::<Config>().cloned()
+        .app_data::<Config>()
+        .cloned()
         .unwrap_or_else(Default::default);
     match auth::validate_token(credentials.token()) {
         Ok(res) => {
