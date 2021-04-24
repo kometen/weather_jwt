@@ -8,7 +8,6 @@ edition = "2018"
 
 [dependencies]
 actix-web = { version = "3", features = ["openssl"] }
-#actix-web-httpauth = { git = "https://github.com/actix/actix-web-httpauth" }
 actix-web-httpauth = "0.5.0"
 actix-rt = "1.1.1"
 actix-service = "1.0.1"
